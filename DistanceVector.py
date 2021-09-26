@@ -72,7 +72,7 @@ class DistanceVector(Node):
                                 new_distance = int(pre_distance + cur_distance)
                                 if self.dist_vector[i] != -99:
                                     if new_distance >= self.dist_vector[i]:
-                                        pass
+                                        break
                                     else:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance     
