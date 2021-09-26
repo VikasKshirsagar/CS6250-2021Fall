@@ -66,13 +66,13 @@ class DistanceVector(Node):
                         if i in self.dist_vector:
                             if i != self.name:
                                 new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
+                                if (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
+                                    updated_status = True
+                                    self.dist_vector[i] = -99
                                 if self.dist_vector[i] != -99:
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance
-                                elif (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
-                                    updated_status = True
-                                    self.dist_vector[i] = -99
                         if i not in self.dist_vector:
                             if i != self.name:
                                 updated_status = True
