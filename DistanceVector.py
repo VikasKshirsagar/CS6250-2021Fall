@@ -71,18 +71,16 @@ class DistanceVector(Node):
                                 cur_distance = int(msg[name][i])
                                 new_distance = int(pre_distance + cur_distance)
                                 if self.dist_vector[i] != -99:
-                                    if new_distance >= self.dist_vector[i]:
-                                        break
-                                    else:
+                                    if new_distance < self.dist_vector[i]:
                                         updated_status = True
-                                        self.dist_vector[i] = new_distance     
+                                        self.dist_vector[i] = new_distance 
+                                    else:
+                                        pass
                                 elif (pre_distance <= -99 and self.dist_vector[i] != -99) or (cur_distance <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
                         elif i not in self.dist_vector:
-                            if i == self.name:
-                                break
-                            else:
+                            if i != self.name:
                                 updated_status = True
                                 for out in self.outgoing_links:
                                     if i != out:
@@ -90,6 +88,8 @@ class DistanceVector(Node):
                                     else:
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i))
                                         break
+                            else:
+                                pass
                                 self.dist_vector[i] = new_distance
    
         # Empty queue
