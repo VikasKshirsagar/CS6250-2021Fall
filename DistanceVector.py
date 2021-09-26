@@ -63,8 +63,7 @@ class DistanceVector(Node):
             for name, value in msg.items():
                 if name == 'dist':
                     for i in value:
-                        if i in self.dist_vector:
-                            if i != self.name: # do not need to process anything
+                        if i in self.dist_vector and i != self.name: # do not need to process anything
                                 pre_distance = int(self.get_outgoing_neighbor_weight(msg['sender']))
                                 cur_distance = int(msg[name][i])
                                 new_distance = int(pre_distance + cur_distance)
