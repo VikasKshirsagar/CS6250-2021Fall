@@ -84,8 +84,6 @@ class DistanceVector(Node):
                                     else:
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i))
                                         break
-                            else:
-                                pass
                                 self.dist_vector[i] = new_distance
    
         # Empty queue
