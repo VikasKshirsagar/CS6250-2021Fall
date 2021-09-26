@@ -57,7 +57,7 @@ class DistanceVector(Node):
         # Implement the Bellman-Ford algorithm here.  It must accomplish two tasks below:
         # TODO 1. Process queued messages       
 
-        # updated_status = False  # whether status is getting updated or not
+        updated_status = False  # whether status is getting updated or not
         
         for msg in self.messages:
             for name, value in msg.items():
@@ -68,7 +68,7 @@ class DistanceVector(Node):
                                 pass
                             else:
                                 pre_distance = int(self.get_outgoing_neighbor_weight(msg['sender']))
-                                cur_distance = int(self.dist_vector[i])
+                                cur_distance = int(msg[name][i])
                                 new_distance = int(pre_distance + cur_distance)
                                 if self.dist_vector[i] != -99 and new_distance < self.dist_vector[i]:
                                     updated_status = True
@@ -83,7 +83,7 @@ class DistanceVector(Node):
                                 updated_status = True
                                 for out in self.outgoing_links:
                                     if i != out:
-                                        new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(self.dist_vector[i])
+                                        new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
                                     else:
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i))
                                         break
