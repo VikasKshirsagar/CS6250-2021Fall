@@ -61,37 +61,57 @@ class DistanceVector(Node):
         
         for msg in self.messages:
             for name, value in msg.items():
-                if name == 'dist':
-                    for i in value:
-                        if i in self.dist_vector:
+                if name == 'dist':  
+                    for i in value: 
+                        if i in self.dist_vector: # case 1: find the values are both in distance(vector) and in msg dictionary key 'dist'
                             if i != self.name:
-                                new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
+                                new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i]) # find the new distance based on previous distance and current distance
+                                #################################################################
+                                #  here are three conditions that could make distance as -99    #
+                                #  1. previous distance less than -99                           #
+                                #  2. current distance less than -99                            #
+                                #  3. new distance less than -99                                #
+                                #  Note: if distance has been -99, updated but no change        #
+                                #  Here are all possible edge cases                             #
+                                #################################################################
                                 if (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
+                                ################################################################
+                                # Once distance have been -99, then distance could be updated  #
+                                # only when distance greater than new distance                 #
+                                # Note: internal cases                                         #
+                                ################################################################
                                 if self.dist_vector[i] != -99:
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance
+                            elif i == self.name:
+                                pass
+                        # Case 2: value in msg dictionary but not in distance (common cases)
                         if i not in self.dist_vector:
                             if i != self.name:
                                 updated_status = True
                                 for outgoing in self.outgoing_links:
                                     if i != outgoing:
-                                    	new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
+                                    	new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i]) # calcuate new distance and have name
                                     else:
-                                        new_distance =  int(self.get_outgoing_neighbor_weight(i))
+                                        new_distance =  int(self.get_outgoing_neighbor_weight(i)) # iteration is needed here because new neighbor is given with new distance
                                         break
                                 self.dist_vector[i] = new_distance
+                            elif i == self.name:
+                                pass
 
         # Empty queue
         self.messages = []
 
-        # TODO 2. Send neighbors updated distances               
+        # TODO 2. Send neighbors updated distances        
+        # Just do the same steps like the init send message to update the distance when status is True      
         if updated_status == True:
             for neighbor in self.neighbor_names:
                 msg = {'sender': self.name, 'dist':self.dist_vector}
                 self.send_msg(msg,neighbor)
+
     def log_distances(self):
         """ This function is called immedately after process_BF each round.  It 
         prints distances to the console and the log file in the following format (no whitespace either end):
@@ -108,6 +128,6 @@ class DistanceVector(Node):
                
         result_str = '' # init result as str
         for node_nms in sorted(self.dist_vector):   # in order to pass 1130 cases from student, then sorted() was needed.
-            result_str = result_str + node_nms + str(self.dist_vector[node_nms]) + ','
+            result_str = result_str + node_nms + str(self.dist_vector[node_nms]) + ','  # save string in to result_str as the format requested
         result_str = result_str[:-1]
         add_entry(self.name, result_str) 
