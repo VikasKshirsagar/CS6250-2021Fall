@@ -63,17 +63,7 @@ class DistanceVector(Node):
             for name, value in msg.items():
                 if name == 'dist':
                     for i in value:
-                        if i not in self.dist_vector:
-                            if i != self.name:
-                                updated_status = True
-                                for outgoing in self.outgoing_links:
-                                    if i != outgoing:
-                                    	new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
-                                    else:
-                                        new_distance =  int(self.get_outgoing_neighbor_weight(i))
-                                        break
-                                self.dist_vector[i] = new_distance
-                        elif i in self.dist_vector:
+                        if i in self.dist_vector:
                             if i != self.name:
                                 if self.dist_vector[i] != -99:
                                     if new_distance < self.dist_vector[i]:
@@ -83,7 +73,16 @@ class DistanceVector(Node):
                                 elif (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
-   
+                        elif i not in self.dist_vector:
+                            if i != self.name:
+                                updated_status = True
+                                for outgoing in self.outgoing_links:
+                                    if i != outgoing:
+                                    	new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
+                                    else:
+                                        new_distance =  int(self.get_outgoing_neighbor_weight(i))
+                                        break
+                                self.dist_vector[i] = new_distance
         # Empty queue
         self.messages = []
 
