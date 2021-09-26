@@ -64,18 +64,18 @@ class DistanceVector(Node):
                 if name == 'dist':
                     for i in value:
                         if i in self.dist_vector:
-                            if i == self.name: # do not need to process anything
-                                pass
-                            else:
+                            if i != self.name: # do not need to process anything
                                 pre_distance = int(self.get_outgoing_neighbor_weight(msg['sender']))
                                 cur_distance = int(msg[name][i])
                                 new_distance = int(pre_distance + cur_distance)
                                 if self.dist_vector[i] != -99:
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
-                                        self.dist_vector[i] = new_distance 
+                                        self.dist_vector[i] = new_distance
                                     else:
                                         pass
+                            # else:
+                            #     pass
                                 elif (pre_distance <= -99 and self.dist_vector[i] != -99) or (cur_distance <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
@@ -88,8 +88,8 @@ class DistanceVector(Node):
                                     else:
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i))
                                         break
-                            else:
-                                pass
+                            # else:
+                            #     pass
                                 self.dist_vector[i] = new_distance
    
         # Empty queue
