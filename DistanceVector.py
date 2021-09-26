@@ -76,7 +76,6 @@ class DistanceVector(Node):
                                 #################################################################
                                 if int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 or int(msg[name][i]) <= -99 or new_distance <= -99:
                                     if self.dist_vector[i] != -99:
-                                # (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                         updated_status = True
                                         self.dist_vector[i] = -99
                                     else:
@@ -86,10 +85,12 @@ class DistanceVector(Node):
                                 # only when distance greater than new distance                 #
                                 # Note: internal cases                                         #
                                 ################################################################
-                                if self.dist_vector[i] != -99:
+                                elif self.dist_vector[i] != -99:
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance
+                                else:
+                                    pass
                             else:
                                 pass
                         # Case 2: value in msg dictionary but not in distance (common cases)
