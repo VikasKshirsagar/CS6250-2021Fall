@@ -63,24 +63,23 @@ class DistanceVector(Node):
             for name, value in msg.items():
                 if name == 'dist':
                     for i in value:
-                        if i in self.dist_vector and i != self.name: # do not need to process anything
-                                pre_distance = int(self.get_outgoing_neighbor_weight(msg['sender']))
-                                cur_distance = int(msg[name][i])
-                                new_distance = int(pre_distance + cur_distance)
-                                if self.dist_vector[i] != -99 and new_distance < self.dist_vector[i]:
-                                        updated_status = True
-                                        self.dist_vector[i] = new_distance
-                                elif (pre_distance <= -99 and self.dist_vector[i] != -99) or (cur_distance <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
+                        if i in self.dist_vector and i != self.name:
+                                new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
+                                if (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
+                                elif self.dist_vector[i] != -99 and new_distance < self.dist_vector[i]:
+                                        updated_status = True
+                                        self.dist_vector[i] = new_distance
+
                         elif i not in self.dist_vector and i != self.name:
                                 updated_status = True
                                 for out in self.outgoing_links:
-                                    if i != out:
-                                        new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
-                                    else:
+                                    if i == out:
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i))
                                         break
+                                    else:
+                                        new_distance = int(self.get_outgoing_neighbor_weight(msg['sender'])) + int(msg[name][i])
                                 self.dist_vector[i] = new_distance
    
         # Empty queue
