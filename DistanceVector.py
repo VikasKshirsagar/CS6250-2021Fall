@@ -63,7 +63,7 @@ class DistanceVector(Node):
             for name, value in msg.items():
                 if name == 'dist':
                     for i in value:
-                        if i in msg[name]: # self.dist_vector
+                        if i in self.dist_vector:
                             if i == self.name: # do not need to process anything
                                 pass
                             else:
