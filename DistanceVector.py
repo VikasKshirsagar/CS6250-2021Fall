@@ -74,9 +74,13 @@ class DistanceVector(Node):
                                 #  Note: if distance has been -99, updated but no change        #
                                 #  Here are all possible edge cases                             #
                                 #################################################################
-                                if (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
-                                    updated_status = True
-                                    self.dist_vector[i] = -99
+                                if int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 or int(msg[name][i]) <= -99 or new_distance <= -99:
+                                    if self.dist_vector[i] != -99:
+                                # (int(self.get_outgoing_neighbor_weight(msg['sender'])) <= -99 and self.dist_vector[i] != -99) or (int(msg[name][i]) <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
+                                        updated_status = True
+                                        self.dist_vector[i] = -99
+                                    else:
+                                        pass
                                 ################################################################
                                 # Once distance have been -99, then distance could be updated  #
                                 # only when distance greater than new distance                 #
@@ -86,10 +90,10 @@ class DistanceVector(Node):
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance
-                            else: # elif i == self.name:
+                            else:
                                 pass
                         # Case 2: value in msg dictionary but not in distance (common cases)
-                        else: #if i not in self.dist_vector:
+                        else:
                             if i != self.name:
                                 updated_status = True
                                 for outgoing in self.outgoing_links:
@@ -99,7 +103,7 @@ class DistanceVector(Node):
                                         new_distance =  int(self.get_outgoing_neighbor_weight(i)) # iteration is needed here because new neighbor is given with new distance
                                         break
                                 self.dist_vector[i] = new_distance
-                            else: # elif i == self.name:
+                            else:
                                 pass
 
         # Empty queue
