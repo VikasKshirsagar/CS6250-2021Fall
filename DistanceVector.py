@@ -72,10 +72,8 @@ class DistanceVector(Node):
                                     if new_distance < self.dist_vector[i]:
                                         updated_status = True
                                         self.dist_vector[i] = new_distance
-                                    else:
-                                        pass
-                            # else:
-                            #     pass
+                            else:
+                                pass
                                 elif (pre_distance <= -99 and self.dist_vector[i] != -99) or (cur_distance <= -99 and self.dist_vector[i] != -99) or (new_distance <= -99 and self.dist_vector[i] != -99):
                                     updated_status = True
                                     self.dist_vector[i] = -99
