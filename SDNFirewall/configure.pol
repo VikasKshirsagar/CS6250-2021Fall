@@ -1,0 +1,28 @@
+# CS 6250 Fall 2021 - SDN Firewall Project with POX
+# build habit-v23
+#
+# This file contains the rules for the firewall as specified in the Project Documentation.  
+#
+# Rule Format:
+# RuleNumber,Action,Source MAC,Destination MAC,Source IP,Destination IP,Protocol,Source Port,Destination Port,Comment/Note
+# RuleNumber = this is a rule number to help you track a particular rule - it is not used in the firewall implementation
+# Action = Block or Allow , Allow Rules need to take precedence over Block Rules
+# Source / Destination MAC address in form of xx:xx:xx:xx:xx:xx
+# Source / Destination IP Address in form of xxx.xxx.xxx.xxx/xx in CIDR notation
+# Protocol = integer IP protocol number per IANA (0-254)
+# Source / Destination Port = if Protocol is TCP or UDP, this is the Application Port Number per IANA
+# Comment/Note = this is for your use in tracking rules.
+#
+# Any field not being used for a match should have a '-' character as it's entry (except for RuleNumber/Comment)
+# Do not pad any of the entries (i.e., have a rule like:  1, Block, -, -,...)
+#
+# Warning:  For the IP address, you need to specify an appropriate network address
+# that matches the subnet mask you are using.  For instance, if you want to use a /16
+# subnet mask, then the IP address must be x.x.0.0.  For example, a proper address to 
+# reference a 192.168.10.x/24 network would be 192.168.10.0/24.  A single host
+# is addressed as a single IP address with a /32.  In other words, the host bit for a 
+# subnet other than /32 must be 0.
+#
+# Example Rules:
+1,Block,-,-,10.0.0.1/32,10.0.1.0/24,6,-,80,Block 10.0.0.1 from accessing a web server on the 10.0.1.0/24 network
+2,Allow,-,-,10.0.0.1/32,10.0.1.125/32,6,-,80,Allow 10.0.0.1 to access a web server on 10.0.1.125 overriding previous rule
